@@ -4,6 +4,7 @@
 #include "CWidget.h"
 #include <QtGui>
 #include <QGridLayout>
+#include <QHBoxLayout>
 
 CMainWidget::CMainWidget(QWidget *parent)
     : QWidget(parent)
@@ -12,6 +13,10 @@ CMainWidget::CMainWidget(QWidget *parent)
     tabWidget->setMovable(true);
     tabWidget->setTabsClosable(true);
     tabWidget->setTabShape(QTabWidget::Rounded);
+
+    QHBoxLayout* hLayout = new QHBoxLayout(this);
+    hLayout->addWidget(tabWidget);
+    hLayout->setMargin(0);
 
     connect(tabWidget->tabBar, &CTabBar::sig_tabDrag, this, &CMainWidget::slot_tabDrag);
     connect(tabWidget, &CTabWidget::tabCloseRequested, this, &CMainWidget::slot_closeTab);
