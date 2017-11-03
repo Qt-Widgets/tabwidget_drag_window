@@ -1,37 +1,37 @@
 //CMainWindow.cpp
-#include "CMainWindow.h"
+#include "CMainWidget.h"
 #include "CTabWidget.h"
 #include "CWidget.h"
 #include <QtGui>
 #include <QGridLayout>
 
-CMainWindow::CMainWindow(QWidget *parent):QMainWindow(parent)
+CMainWidget::CMainWidget(QWidget *parent)
+    : QWidget(parent)
 {
     tabWidget = new CTabWidget(this);
     tabWidget->setMovable(true);
     tabWidget->setTabsClosable(true);
     tabWidget->setTabShape(QTabWidget::Rounded);
-    //Ìí¼Ó4¸ötabÒ³
-    tabWidget->addTab(new QTextEdit,"eidt 1");
-    tabWidget->addTab(new QTextEdit,"eidt 2");
-    tabWidget->addTab(new QTextEdit,"eidt 3");
-    tabWidget->addTab(new QTextEdit,"eidt 4");
-    setCentralWidget(tabWidget);
 
-    connect(tabWidget->tabBar,SIGNAL(sig_tabDrag(int,QPoint)),this,SLOT(slot_tabDrag(int,QPoint)));
-    connect(tabWidget,SIGNAL(tabCloseRequested(int)),this,SLOT(slot_closeTab(int)));
-    connect(tabWidget,SIGNAL(currentChanged(int)),tabWidget,SLOT(setCurrentIndex(int)));
+    connect(tabWidget->tabBar, &CTabBar::sig_tabDrag, this, &CMainWidget::slot_tabDrag);
+    connect(tabWidget, &CTabWidget::tabCloseRequested, this, &CMainWidget::slot_closeTab);
+    connect(tabWidget, &CTabWidget::currentChanged, tabWidget, &CTabWidget::setCurrentIndex);
 
     resize(800,600);
 }
 
-void CMainWindow::slot_tabDrag(int index,QPoint point)
+void CMainWidget::addWidTab(QWidget *pWid, QString strTab)
+{
+    tabWidget->addTab(pWid, strTab);
+}
+
+void CMainWidget::slot_tabDrag(int index,QPoint point)
 {
     CWidget *widget = new CWidget;
     QWidget *draged = tabWidget->widget(index);
     QString windowName = tabWidget->tabText(index);
     tabWidget->removeTab(index);
-    connect(widget,SIGNAL(sig_doubleClickedTitleBar()),this,SLOT(slot_tabBarDoubleClicked()));
+    connect(widget,&CWidget::sig_doubleClickedTitleBar,this,&CMainWidget::slot_tabBarDoubleClicked);
 
     QGridLayout *layout = new QGridLayout;
     layout->addWidget(draged);
@@ -43,17 +43,17 @@ void CMainWindow::slot_tabDrag(int index,QPoint point)
     draged->show();
 }
 
-void CMainWindow::slot_tabBarDoubleClicked()
+void CMainWidget::slot_tabBarDoubleClicked()
 {
     CWidget *widget = qobject_cast<CWidget*>(sender());
     QObjectList list = widget->children();
-    QTextEdit *edit = NULL;
+    QWidget *edit = NULL;
 
     for(int i = 0;i<list.count();++i)
     {
-        if(list[i]->inherits("QTextEdit"))
+        if(list[i]->inherits("QWidget"))
         {
-            edit = qobject_cast<QTextEdit*>(list[i]);
+            edit = qobject_cast<QWidget*>(list[i]);
             break;
         }
     }
@@ -64,12 +64,12 @@ void CMainWindow::slot_tabBarDoubleClicked()
 
     edit->setParent(tabWidget);
     tabWidget->addTab(edit,widget->windowTitle());
-    delete widget;
+    widget->deleteLater();
 }
 
-void CMainWindow::slot_closeTab(int index)
+void CMainWidget::slot_closeTab(int index)
 {
     QWidget *draged = tabWidget->widget(index);
     tabWidget->removeTab(index);
-    delete draged;
+    draged->deleteLater();
 }

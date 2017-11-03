@@ -6,11 +6,6 @@ CWidget::CWidget(QWidget *parent):QWidget(parent)
 
 }
 
-CWidget::~CWidget()
-{
-
-}
-
 bool CWidget::event(QEvent *event)
 {
 #ifdef unix

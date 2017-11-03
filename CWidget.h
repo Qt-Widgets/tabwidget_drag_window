@@ -8,7 +8,6 @@ class CWidget:public QWidget
     Q_OBJECT
 public:
     CWidget(QWidget* = 0);
-    ~CWidget();
 protected:
     bool event(QEvent *);
 signals:

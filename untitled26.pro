@@ -28,11 +28,11 @@ SOURCES += \
     CTabWidget.cpp \
     CTabBar.cpp \
     CWidget.cpp \
-    CMainWindow.cpp
+    CMainWidget.cpp
 
 HEADERS += \
     CTabWidget.h \
     CTabBar.h \
     CWidget.h \
-    CMainWindow.h
+    CMainWidget.h
 

@@ -9,7 +9,6 @@ class CTabBar :public QTabBar
     Q_OBJECT
 public:
     CTabBar(QWidget* =0);
-    virtual ~CTabBar(){};
 protected:
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);   //通过两个事件模拟出tab被拖动的动作
