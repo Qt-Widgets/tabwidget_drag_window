@@ -10,7 +10,7 @@ CMainWindow::CMainWindow(QWidget *parent):QMainWindow(parent)
     tabWidget = new CTabWidget(this);
     tabWidget->setMovable(true);
     tabWidget->setTabsClosable(true);
-    tabWidget->setTabShape(QTabWidget::Triangular);
+    tabWidget->setTabShape(QTabWidget::Rounded);
     //Ìí¼Ó4¸ötabÒ³
     tabWidget->addTab(new QTextEdit,"eidt 1");
     tabWidget->addTab(new QTextEdit,"eidt 2");
